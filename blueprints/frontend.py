@@ -2,10 +2,10 @@
 
 __all__ = ()
 
-import bcrypt
 import hashlib
 import os
 import time
+import pycountry
 
 from cmyui.logging import Ansi
 from cmyui.logging import log
@@ -18,6 +18,10 @@ from quart import render_template
 from quart import request
 from quart import session
 from quart import send_file
+from cryptography.hazmat.primitives import hashes
+from cryptography.hazmat.primitives.kdf.hkdf import HKDFExpand
+from cryptography.hazmat.backends import default_backend as backend
+from cryptography.exceptions import InvalidKey
 
 from constants import regexes
 from objects import glob
@@ -258,7 +262,7 @@ async def settings_password_post():
         'FROM users '
         'WHERE id = %s',
         [session['user_data']['id']])
-    )['pw_bcrypt'].encode()
+    )['pw_bcrypt'].encode('ISO-8859-1').decode('unicode-escape').encode('ISO-8859-1')
 
     pw_md5 = hashlib.md5(old_password.encode()).hexdigest().encode()
 
@@ -270,7 +274,10 @@ async def settings_password_post():
                 log(f"{session['user_data']['name']}'s change pw failed - pw incorrect.", Ansi.LYELLOW)
             return await flash('error', 'Your old password is incorrect.', 'settings/password')
     else: # ~200ms
-        if not bcrypt.checkpw(pw_md5, pw_bcrypt):
+        k = HKDFExpand(algorithm=hashes.SHA256(), length=32, info=b'', backend=backend())
+        try:
+            k.verify(pw_bcrypt, pw_md5)
+        except:
             if glob.config.debug:
                 log(f"{session['user_data']['name']}'s change pw failed - pw incorrect.", Ansi.LYELLOW)
             return await flash('error', 'Your old password is incorrect.', 'settings/password')
@@ -281,7 +288,8 @@ async def settings_password_post():
 
     # calculate new md5 & bcrypt pw
     pw_md5 = hashlib.md5(new_password.encode()).hexdigest().encode()
-    pw_bcrypt = bcrypt.hashpw(pw_md5, bcrypt.gensalt())
+    k = HKDFExpand(algorithm=hashes.SHA256(), length=32, info=b'', backend=backend())
+    pw_bcrypt = k.derive(pw_md5).decode('unicode-escape')
 
     # update password in cache and db
     bcrypt_cache[pw_bcrypt] = pw_md5
@@ -325,8 +333,14 @@ async def profile_select(id):
     if not user_data or not (user_data['priv'] & Privileges.Normal or is_staff):
         return (await render_template('404.html'), 404)
 
+    if user_data['id'] in glob.cache['country']:
+        country_name = glob.cache['country'][user_data['id']]
+    else:
+        country_name = pycountry.countries.get(alpha_2=user_data['country']).name
+        glob.cache['country'][user_data['id']] = country_name
+
     user_data['customisation'] = utils.has_profile_customizations(user_data['id'])
-    return await render_template('profile.html', user=user_data, mode=mode, mods=mods)
+    return await render_template('profile.html', user=user_data, mode=mode, mods=mods, country=country_name)
 
 
 @frontend.route('/leaderboard')
@@ -376,7 +390,7 @@ async def login_post():
 
     # cache and other related password information
     bcrypt_cache = glob.cache['bcrypt']
-    pw_bcrypt = user_info['pw_bcrypt'].encode()
+    pw_bcrypt = user_info['pw_bcrypt'].encode('ISO-8859-1').decode('unicode-escape').encode('ISO-8859-1')
     pw_md5 = hashlib.md5(passwd_txt.encode()).hexdigest().encode()
 
     # check credentials (password) against db
@@ -387,7 +401,10 @@ async def login_post():
                 log(f"{username}'s login failed - pw incorrect.", Ansi.LYELLOW)
             return await flash('error', 'Password is incorrect.', 'login')
     else: # ~200ms
-        if not bcrypt.checkpw(pw_md5, pw_bcrypt):
+        k = HKDFExpand(algorithm=hashes.SHA256(), length=32, info=b'', backend=backend())
+        try:
+            k.verify(pw_bcrypt, pw_md5)
+        except InvalidKey:
             if glob.config.debug:
                 log(f"{username}'s login failed - pw incorrect.", Ansi.LYELLOW)
             return await flash('error', 'Password is incorrect.', 'login')
@@ -505,7 +522,8 @@ async def register_post():
     # TODO: add correct locking
     # (start of lock)
     pw_md5 = hashlib.md5(passwd_txt.encode()).hexdigest().encode()
-    pw_bcrypt = bcrypt.hashpw(pw_md5, bcrypt.gensalt())
+    k = HKDFExpand(algorithm=hashes.SHA256(), length=32, info=b'', backend=backend())
+    pw_bcrypt = k.derive(pw_md5).decode('unicode-escape')
     glob.cache['bcrypt'][pw_bcrypt] = pw_md5 # cache pw
 
     safe_name = utils.get_safe_name(username)
