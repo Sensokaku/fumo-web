@@ -276,7 +276,7 @@ async def settings_password_post():
     else: # ~200ms
         k = HKDFExpand(algorithm=hashes.SHA256(), length=32, info=b'', backend=backend())
         try:
-            k.verify(pw_bcrypt, pw_md5)
+            k.verify(pw_md5, pw_bcrypt)
         except:
             if glob.config.debug:
                 log(f"{session['user_data']['name']}'s change pw failed - pw incorrect.", Ansi.LYELLOW)
@@ -403,7 +403,7 @@ async def login_post():
     else: # ~200ms
         k = HKDFExpand(algorithm=hashes.SHA256(), length=32, info=b'', backend=backend())
         try:
-            k.verify(pw_bcrypt, pw_md5)
+            k.verify(pw_md5, pw_bcrypt)
         except InvalidKey:
             if glob.config.debug:
                 log(f"{username}'s login failed - pw incorrect.", Ansi.LYELLOW)
