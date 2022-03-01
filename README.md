@@ -1,17 +1,17 @@
 Table of Contents
 ==================
 - [Table of Contents](#table-of-contents)
-  - [What is guweb?](#what-is-guweb)
+  - [What is fumo-web?](#what-is-fumo-web)
   - [Requirements](#requirements)
   - [Setup](#setup)
   - [Directory Structure](#directory-structure)
   - [The team](#the-team)
   - [The End](#the-end)
 
-What is guweb?
+What is fumo-web?
 ------
 
-guweb is the front-facing appearance of the osu! server protocol, [gulag](https://github.com/cmyui/gulag)!
+fumo-web is the front-facing appearance of the osu! server protocol, [gulag](https://github.com/cmyui/gulag)!
 Using native async/await syntax written on top of [Quart](https://github.com/pgjones/quart) and
 [cmyui's multipurpose library](https://github.com/cmyui/cmyui_pkg), guweb achieves flexability, cleanliness,
 and efficiency not seen in other frontend implementations - all while maintaining the simplicity of Python.
@@ -44,7 +44,7 @@ python3.9 get-pip.py && rm get-pip.py
 sudo apt install mysql-server nginx
 
 # Clone guweb from GitHub.
-git clone https://github.com/varkaria/guweb.git
+git clone https://github.com/fumosu/fumo-web.git
 cd guweb
 
 # Initialize and update the submodules.
@@ -54,7 +54,7 @@ git submodule init && git submodule update
 python3.9 -m pip install -r ext/requirements.txt
 
 # Add and configure guweb's NGINX config to your nginx/sites-enabled.
-sudo ln -r -s ext/nginx.conf /etc/nginx/sites-enabled/guweb.conf
+sudo ln -r -s ext/nginx.conf /etc/nginx/sites-enabled/fumo-web.conf
 sudo nano ext/nginx.conf
 sudo nginx -s reload
 
