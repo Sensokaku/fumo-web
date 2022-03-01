@@ -8,7 +8,7 @@ Table of Contents
   - [The team](#the-team)
   - [The End](#the-end)
 
-What is guweb?
+What is fumo-web?
 ------
 
 fumo-web is the front-facing appearance of the osu! server protocol, [gulag](https://github.com/cmyui/gulag)!
