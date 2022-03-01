@@ -59,7 +59,7 @@
 }
 
 .splash { 
-  background: linear-gradient(45deg, #183d7a, #b2c0cb, #183d7a);
+  background: linear-gradient(45deg, #183d7a, #487393, #183d7a);
   background-size: 200% 200%;
   -webkit-animation: colors 13s ease infinite;
   animation: colors 13s ease infinite;
