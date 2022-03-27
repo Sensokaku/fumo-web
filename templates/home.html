@@ -42,11 +42,13 @@
       <div class="column flex-vcenter flex-lcenter is-size-2-desktop is-size-1-fullhd" id="title">
         <h1 class="title is-spaced is-size-2-desktop is-size-1-fullhd">{{ appName() }}</h1>
         <h2 class="subtitle">
-          We are an osu! private server built from the ground up with many
-          unique features not seen elsewhere - for more information, check
-          out <a href="http://github.com/cmyui/gulag">gulag</a>
-          and <a href="https://github.com/Varkaria/guweb">guweb</a>
-          on GitHub - we're fully open source!
+          <b>Welcome to Fumosu!</b><br>
+          We are a growing community that loves fumos and touhou!
+          We are also a osu! private server, featuring Relax and Autopilot score submission, functioning multi-player and spectator system.<br>
+          {% if not session.authenticated %}
+            We hope we could see you soon playing on our server!<br>
+            You can sign in or sign up using the buttons below.
+          {% endif %}
         </h2>
         {% if not session.authenticated %}
         <div class="buttons">
@@ -60,7 +62,7 @@
         {% endif %}
       </div>
       <div class="column flex flex-lcenter" id="mascot">
-        <div class="gulag-avatar"></div>
+        <div class="gaming-fum"></div>
       </div>
     </div>
   </div>
@@ -120,7 +122,7 @@
   <div class="hero-body">
     <div class="container has-text-centered">
       <h1 class="title is-spaced">What are you waiting for?</h1>
-      <h2 class="subtitle">Join {{ appName() }}! It's risk-free! You won't get your account banned on official servers
+      <h2 class="subtitle">Join {{ appName() }} It's risk-free! You won't get your account banned on official servers
         if
         you play here with us! And don't worry, as you can always switch between the official servers and us at any time!</h2>
       <div class="buttons is-centered"><a class="control button is-primary" href="/register">Sign up for free</a><a

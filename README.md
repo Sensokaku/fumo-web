@@ -11,9 +11,9 @@ Table of Contents
 What is fumo-web?
 ------
 
-fumo-web is the front-facing appearance of the osu! server protocol, [gulag](https://github.com/cmyui/gulag)!
+fumo-web is the front-facing appearance of the osu! server, [Fumosu](https://fumosu.pw)!
 Using native async/await syntax written on top of [Quart](https://github.com/pgjones/quart) and
-[cmyui's multipurpose library](https://github.com/cmyui/cmyui_pkg), guweb achieves flexability, cleanliness,
+[cmyui's multipurpose library](https://github.com/cmyui/cmyui_pkg), fumo-web achieves flexability, cleanliness,
 and efficiency not seen in other frontend implementations - all while maintaining the simplicity of Python.
 
 Requirements
@@ -31,7 +31,7 @@ Setup is relatively simple - these commands should set you right up.
 Notes:
 
 - Ubuntu 20.04 is known to have issues with NGINX and osu! for unknown reasons?
-- If you have any difficulties setting up guweb, feel free to join the Discord server at the top of the README, we now have a bit of a community!
+- If you have any difficulties setting up fumo-web, feel free to join the Discord server at the top of the README, we now have a bit of a community!
 
 ```sh
 # Install Python >=3.9 and latest version of PIP.
@@ -43,9 +43,9 @@ python3.9 get-pip.py && rm get-pip.py
 # Install MySQL and NGINX.
 sudo apt install mysql-server nginx
 
-# Clone guweb from GitHub.
+# Clone fumo-web from GitHub.
 git clone https://github.com/fumosu/fumo-web.git
-cd guweb
+cd fumo-web
 
 # Initialize and update the submodules.
 git submodule init && git submodule update
@@ -53,18 +53,18 @@ git submodule init && git submodule update
 # Install requirements from pip.
 python3.9 -m pip install -r ext/requirements.txt
 
-# Add and configure guweb's NGINX config to your nginx/sites-enabled.
+# Add and configure fumo-web's NGINX config to your nginx/sites-enabled.
 sudo ln -r -s ext/nginx.conf /etc/nginx/sites-enabled/fumo-web.conf
 sudo nano ext/nginx.conf
 sudo nginx -s reload
 
-# Configure guweb.
+# Configure fumo-web.
 cp ext/config.sample.py config.py
 nano config.py
 
-# Run guweb (on port 8000).
+# Run fumo-web (on port 8000).
 python3.9 main.py # Run directly to access debug features for development!
-hypercorn main.py # Please run guweb with hypercorn when in production! It will improve performance drastically by disabling all of the debug features a developer would need!
+hypercorn main.py # Please run fumo-web with hypercorn when in production! It will improve performance drastically by disabling all of the debug features a developer would need!
 ```
 
 Directory Structure
@@ -72,14 +72,14 @@ Directory Structure
 
     .
     ├── blueprints   # Modular routes such as the API, Frontend, or Admin Panel.
-    ├── docs         # Markdown files used in guweb's documentation system.
-    ├── ext          # External files from guweb's primary operation.
+    ├── docs         # Markdown files used in fumo-web's documentation system.
+    ├── ext          # External files from fumo-web's primary operation.
     ├── objects      # Code for representing privileges, global objects, and more.
-    ├── static       # Code or content that is not modified or processed by guweb itself.
+    ├── static       # Code or content that is not modified or processed by fumo-web itself.
     ├── templates    # HTML that contains content that is rendered after the page has loaded.
         ├── admin    # Templated content for the admin panel (/admin).
         ├── settings # Templated content for settings (/settings).
-        └ ...         # Templated content for all of guweb (/).
+        └ ...         # Templated content for all of fumo-web (/).
 
 
 The team

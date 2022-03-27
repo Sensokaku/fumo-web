@@ -24,6 +24,8 @@ version = Version(1, 3, 0)
 # used to secure session data.
 # we recommend using a long randomly generated ascii string.
 app.secret_key = glob.config.secret_key
+app.config["TEMPLATES_AUTO_RELOAD"] = True
+
 
 @app.before_serving
 async def mysql_conn() -> None:

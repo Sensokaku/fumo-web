@@ -28,7 +28,7 @@
                         </div>
                         <div class="map-date">
                             <time>
-                                <% timeago.format(map.play_time) %>
+                                <% timeago.format(map.play_time + ' UTC-6') %>
                             </time>
                         </div>
                     </div>
@@ -218,12 +218,12 @@
     <div class="second-block">
         <div class="columns is-marginless two-sides">
             <div class="column is-one-third" v-cloak>
-                <div class="header" v-if='data.stats.out[modegulag].rank != -1'>
+                <div class="header" v-if='data.stats.out[modegulag].rank != 0'>
                     <div class="title">
                         <i class="fas fa-user-friends"></i> Rank
                     </div>
                 </div>
-                <div class="stats-block rank-block" v-if='data.stats.out[modegulag].country_rank != -1'>
+                <div class="stats-block rank-block" v-if='data.stats.out[modegulag].rank != 0'>
                     <table class="is-striped">
                         <tbody>
                             <tr>
@@ -234,7 +234,7 @@
                                     </span>
                                 </td>
                             </tr>
-                            <tr>
+                            <tr v-if='data.stats.out[modegulag].country_rank != 0'>
                                 <td>Country rank</td>
                                 <td class="right-aligned">
                                     <span id="country-rank">

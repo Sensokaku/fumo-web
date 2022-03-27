@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 # app name
-app_name = 'guweb'
+app_name = 'Fumosu!'
 
 # secret key
 secret_key = 'changeme'
@@ -11,7 +11,7 @@ hCaptcha_sitekey = 'changeme'
 hCaptcha_secret = 'changeme'
 
 # domain (used for api, avatar, etc)
-domain = 'gulag.ca'
+domain = 'fumosu.pw'
 
 # mysql credentials
 mysql = {
@@ -41,9 +41,7 @@ disallowed_passwords = {
 # enable registration
 registration = True
 
-# social links (used throughout guweb)
-github = 'https://github.com/varkaria/guweb'
-discord_server = 'https://discord.com/invite/Y5uPvcNpD9'
-youtube = 'https://youtube.com/'
-twitter = 'https://twitter.com/'
-instagram = 'https://instagram.com/'
+# social links (used throughout fumo-web)
+github = 'https://github.com/fumosu/fumo-web'
+discord_server = 'https://discord.gg/SvE65GsEXE'
+twitter = 'https://twitter.com/aochiosu'
