@@ -123,6 +123,14 @@
 {% endmacro %}
 
 {% block header %}
+<head>
+    <meta property="og:type" content="website" />							
+    <meta property="og:url" content="https://fumosu.pw/u/{{ user['id'] }}" />							
+    <meta property="og:title" content="{{ user['name'] }}" />	
+    <meta property="og:description" content="<b>{{ user['name'] }}</b> is a Fumosu Player from <b>{{ country }}</b>." />
+    <meta property="og:image" content="https://a.fumosu.pw/{{ user['id'] }}" />
+</head>
+
 <script src="/static/js/asserts/vue.js"></script>
 <script src="/static/js/asserts/vue-axios.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/timeago.js/4.0.2/timeago.min.js"></script>
@@ -135,14 +143,6 @@
     var domain = "{{ domain() }}";
 </script>
 {% endblock %}
-
-<head>
-    <meta property="og:type" content="website" />							
-    <meta property="og:url" content="https://fumosu.pw/u/{{ user['id'] }}" />							
-    <meta property="og:title" content="{{ user['name'] }}" />	
-    <meta property="og:description" content="<b>{{ user['name'] }}</b> is a Fumosu Player from <b>{{ country }}</b>." />
-    <meta property="og:image" content="https://a.fumosu.pw/{{ user['id'] }}" />
-</head>
 
 {% block content %}
 <div id="app">

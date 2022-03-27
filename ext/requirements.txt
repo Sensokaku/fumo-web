@@ -8,4 +8,4 @@ orjson
 timeago
 markdown2
 Pillow
-pycountries
+pycountry

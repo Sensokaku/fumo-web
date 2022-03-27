@@ -18,6 +18,7 @@ html {
   --main: 217;
   position: relative;
   min-height: 100%;
+  --main: 217;
 }
 
 .footer {
