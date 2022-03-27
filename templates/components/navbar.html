@@ -50,7 +50,9 @@
             {% if session.authenticated %}
             <div class="navbar-item has-dropdown is-hoverable">
                 <a class="navbar-link">
-                    {{ session.user_data['name'] }}
+                    <img class="user-avatar" src="https://a.fumosu.pw/{{ session.user_data['id'] }}">
+                        {{ session.user_data['name'] }}
+                    </img>
                 </a>
                 <div class="navbar-dropdown">
                     <a class="navbar-item" href="/u/{{ session.user_data['id'] }}">
@@ -59,12 +61,10 @@
                     <a class="navbar-item" href="/settings">
                         Settings
                     </a>
+                    <a class="navbar-item" href="/logout">
+                        Logout
+                    </a>
                 </div>
-            </div>
-            <div class="navbar-item">
-                <a class="button is-light" href="/logout">
-                    Logout
-                </a>
             </div>
             {% else %}
             <div class="navbar-item">

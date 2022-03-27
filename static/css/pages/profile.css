@@ -125,6 +125,49 @@
   width: 100%;
 }
 
+.badge {
+  background-color: #4E5D94;
+  border-radius: 50px;
+  transition: 0.4s ease;
+  width: 32px;
+  height: 32px;
+  margin-left: 3px;
+}
+
+.badge > .badge-icon, .badge-text {
+  display: inline-flex;
+}
+
+.badge:hover {
+  width: 128px;
+}
+
+.badge:hover > .badge-icon {
+  margin-right: auto;
+}
+
+.badge:hover > .badge-text {
+  animation: 1s fadeIn;
+  animation-fill-mode: forwards;
+}
+
+.badge-icon {
+  margin: 8px 2px 7px 8px;
+}
+
+.badge-text {
+  visibility: hidden;
+}
+
+@keyframes fadeIn {
+  20% {
+    visibility: hidden;
+  }
+  100% {
+    visibility: visible;
+  }
+}
+
 .right-aligned {
   text-align: right !important;
   margin-left: auto;

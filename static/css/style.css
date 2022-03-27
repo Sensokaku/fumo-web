@@ -18,7 +18,6 @@ html {
   --main: 217;
   position: relative;
   min-height: 100%;
-  --main: 217;
 }
 
 .footer {
@@ -173,6 +172,7 @@ a.foot-link {
 .navbar {
   position: fixed !important;
   width: 100%;
+  height: 6%; 
   transition: 0.2s ease;
   min-height: 0rem;
 }
@@ -191,6 +191,14 @@ a.foot-link {
   top: 0;
   backdrop-filter: blur(4px);
   background-color: hsla(var(--main), 50%, 50%, 0.7) !important;
+}
+
+.user-avatar {
+  margin-right: 5px;
+  height: 22px;
+  width: 22px;
+  border-radius: 50%;
+  vertical-align: middle;
 }
 
 .minimized.navbar {
@@ -265,7 +273,7 @@ a.foot-link {
 }
 
 .navbar-dropdown .navbar-item {
-  padding: 6px !important;
+  padding: 8px !important;
   color: white;
   opacity: 1;
 }

@@ -141,6 +141,15 @@
     var mode = '{{ mode }}';
     var mods = '{{ mods }}';
     var domain = "{{ domain() }}";
+
+    function ResizeSpan() {
+            document.getElementById("badge").style.width = "128px";
+        }
+
+    function ResizeSpan2() {
+            document.getElementById("badge").style.width = "32px";
+    }
+
 </script>
 {% endblock %}
 
@@ -209,9 +218,16 @@
                 </div>
             </div>
             <div class="bar-selection badge-selects">
-                <span>
-                    Badges not yet implemented!
-                </span>
+                {% if hasbadges %}
+                    {% for b in badges %}
+                        <div class="badge">
+                            <div class="badge-icon" style="{{ b['color'] }}">
+                                <i class="{{ b['icon'] }}"></i>
+                            </div>
+                            <div class="badge-text">{{ b['name'] }}</div>
+                        </div>
+                    {% endfor %}
+                {% endif %}
             </div>
         </div>
     </div>

@@ -339,8 +339,25 @@ async def profile_select(id):
         country_name = pycountry.countries.get(alpha_2=user_data['country']).name
         glob.cache['country'][user_data['id']] = country_name
 
+    hb = await glob.db.fetchall(
+        "SELECT bid FROM user_badges WHERE uid = %s", 
+        [user_data['id']],
+    )
+
+    if hb:
+        hb = [ x['bid'] for x in hb ]
+        hasbadges = True
+        badges = await glob.db.fetchall(
+            "SELECT * FROM badges WHERE id IN (%s)", 
+            [",".join(map(str, hb))]
+        )
+    else:
+        hasbadges = False
+        badges = None
+         
+
     user_data['customisation'] = utils.has_profile_customizations(user_data['id'])
-    return await render_template('profile.html', user=user_data, mode=mode, mods=mods, country=country_name)
+    return await render_template('profile.html', user=user_data, mode=mode, mods=mods, country=country_name, hasbadges=hasbadges, badges=badges)
 
 
 @frontend.route('/leaderboard')
