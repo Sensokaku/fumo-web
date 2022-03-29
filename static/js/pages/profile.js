@@ -42,12 +42,14 @@ new Vue({
             mode: mode,
             mods: mods,
             modegulag: 0,
-            userid: userid
+            userid: userid,
+            nmode: "std!vn",
         };
     },
     created() {
         // starting a page
         this.modegulag = this.StrtoGulagInt();
+        this.nmode = this.ModeName();
         this.LoadProfileData();
         this.LoadAllofdata();
         this.LoadUserStatus();
@@ -128,6 +130,7 @@ new Vue({
             this.data.scores.recent.more.limit = 5
             this.data.scores.best.more.limit = 5
             this.data.maps.most.more.limit = 6
+            this.nmode = this.ModeName();
             this.LoadAllofdata();
         },
         AddLimit(which) {
@@ -229,6 +232,9 @@ new Vue({
                     return 3;
             }
         },
+        ModeName() {
+            return this.mode + "!" + this.mods;
+        }
     },
     computed: {}
 });

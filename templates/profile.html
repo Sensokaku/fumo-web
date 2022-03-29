@@ -141,6 +141,7 @@
     var mode = '{{ mode }}';
     var mods = '{{ mods }}';
     var domain = "{{ domain() }}";
+    var nmode =  "{{ nmode }}";
 </script>
 {% endblock %}
 
@@ -254,7 +255,7 @@
                 </div>
                 <div class="header">
                     <div class="title">
-                        <i class="fas fa-chart-pie"></i> Statistics
+                        <i class="fas fa-chart-pie"></i> <% nmode + ' Stats' %>
                     </div>
                 </div>
                 <div class="stats-block">

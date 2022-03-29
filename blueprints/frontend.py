@@ -180,13 +180,15 @@ async def settings_custom():
 @login_required
 async def settings_custom_post():
     files = await request.files
+    form = await request.form
     banner = files.get('banner')
     background = files.get('background')
+    pmode = form.get("pmode", type=str)
     ALLOWED_EXTENSIONS = ['.jpeg', '.jpg', '.png', '.gif']
 
     # no file uploaded; deny post
-    if banner is None and background is None:
-        return await flash_with_customizations('error', 'No image was selected!', 'settings/custom')
+    if banner is None and background is None and pmode is None:
+        return await flash_with_customizations('error', 'No change was made.', 'settings/custom')
 
     if banner is not None and banner.filename:
         _, file_extension = os.path.splitext(banner.filename.lower())
@@ -217,6 +219,10 @@ async def settings_custom_post():
                 os.remove(background_file_with_ext)
 
         await background.save(f'{background_file_no_ext}{file_extension}')
+
+    if pmode != None:
+        session["user_data"]["preferred_mode"] = pmode
+        await glob.db.execute("UPDATE users SET preferred_mode = %s WHERE id = %s", [pmode, session['user_data']['id']])
 
     return await flash_with_customizations('success', 'Your customisation has been successfully changed!', 'settings/custom')
 
@@ -305,6 +311,12 @@ async def settings_password_post():
     session.pop('user_data', None)
     return await flash('success', 'Your password has been changed! Please log in again.', 'login')
 
+MODE_INT_TO_STR = {
+    0: 'std',
+    1: 'taiko',
+    2: 'catch',
+    3: 'mania',
+}
 
 @frontend.route('/u/<id>')
 async def profile_select(id):
@@ -312,7 +324,7 @@ async def profile_select(id):
     mode = request.args.get('mode', 'std', type=str) # 1. key 2. default value
     mods = request.args.get('mods', 'vn', type=str)
     user_data = await glob.db.fetch(
-        'SELECT name, safe_name, id, priv, country '
+        'SELECT name, safe_name, id, priv, country, preferred_mode '
         'FROM users '
         'WHERE safe_name IN (%s) OR id IN (%s) LIMIT 1',
         [id, utils.get_safe_name(id)]
@@ -338,6 +350,8 @@ async def profile_select(id):
     else:
         country_name = pycountry.countries.get(alpha_2=user_data['country']).name
         glob.cache['country'][user_data['id']] = country_name
+
+    mode = MODE_INT_TO_STR[user_data["preferred_mode"]]
 
     hb = await glob.db.fetchall(
         "SELECT bid FROM user_badges WHERE uid = %s", 
@@ -392,7 +406,7 @@ async def login_post():
     # check if account exists
     user_info = await glob.db.fetch(
         'SELECT id, name, email, priv, '
-        'pw_bcrypt, silence_end '
+        'pw_bcrypt, silence_end, preferred_mode '
         'FROM users '
         'WHERE safe_name = %s',
         [utils.get_safe_name(username)]
@@ -452,6 +466,7 @@ async def login_post():
         'email': user_info['email'],
         'priv': user_info['priv'],
         'silence_end': user_info['silence_end'],
+        'preferred_mode': user_info["preferred_mode"],
         'is_staff': user_info['priv'] & Privileges.Staff != 0,
         'is_donator': user_info['priv'] & Privileges.Donator != 0
     }
