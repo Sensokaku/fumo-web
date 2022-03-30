@@ -315,7 +315,10 @@ MODE_INT_TO_STR = {
     0: 'std',
     1: 'taiko',
     2: 'catch',
-    3: 'mania',
+    4: 'stdrx',
+    5: 'taikorx',
+    6: 'catchrx',
+    8: 'stdap',
 }
 
 @frontend.route('/u/<id>')
